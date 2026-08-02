@@ -77,7 +77,7 @@ jobs:
         run: .\spc.exe download --with-php=8.4 --for-extensions "iconv,phar" --prefer-pre-built --retry=3 --no-interaction --no-motd
 
       - name: Build PHP Micro
-        run: .\spc.exe build "iconv,phar" --build-micro --with-micro-fake-cli --debug --preserve-log --no-interaction --no-motd
+        run: .\spc.exe build "iconv,phar" --build-micro --debug --preserve-log --no-interaction --no-motd
 
       - name: Print PHP Micro build logs on failure
         if: failure()
