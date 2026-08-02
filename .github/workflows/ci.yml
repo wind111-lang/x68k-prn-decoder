@@ -36,3 +36,26 @@ jobs:
 
       - name: Test
         run: composer test
+
+  windows-exe:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+
+      - name: Test Windows CLI
+        run: go test ./cmd/x68k-prn-decoder
+
+      - name: Build Windows CLI
+        run: go build -trimpath -ldflags "-X main.version=ci" -o x68k-prn-decoder-windows-amd64.exe ./cmd/x68k-prn-decoder
+
+      - name: Upload Windows CLI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: x68k-prn-decoder-windows-amd64
+          path: x68k-prn-decoder-windows-amd64.exe

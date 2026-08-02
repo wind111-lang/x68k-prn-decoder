@@ -3,3 +3,5 @@
 *.prn
 *_decoded.txt
 *_decoded.html
+*.exe
+.tmp-go*/
