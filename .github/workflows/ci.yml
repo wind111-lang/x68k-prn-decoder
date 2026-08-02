@@ -77,7 +77,16 @@ jobs:
         run: .\spc.exe download --with-php=8.4 --for-extensions "iconv,phar" --prefer-pre-built --retry=3 --no-interaction --no-motd
 
       - name: Build PHP Micro
-        run: .\spc.exe build "iconv,phar" --build-micro --with-micro-fake-cli --no-interaction --no-motd
+        run: .\spc.exe build "iconv,phar" --build-micro --with-micro-fake-cli --debug --preserve-log --no-interaction --no-motd
+
+      - name: Print PHP Micro build logs on failure
+        if: failure()
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path log -File -ErrorAction SilentlyContinue | ForEach-Object {
+            Write-Output "===== $($_.Name) ====="
+            Get-Content -LiteralPath $_.FullName -Tail 500
+          }
 
       - name: Combine PHP application and Micro SAPI
         run: .\spc.exe micro:combine dist\x68k-prn-decoder.phar -O dist\x68k-prn-decoder-windows-amd64.exe --no-interaction --no-motd
