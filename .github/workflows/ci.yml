@@ -15,7 +15,7 @@ jobs:
         php-version: ['8.0', '8.4']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -39,23 +39,66 @@ jobs:
 
   windows-exe:
     runs-on: windows-latest
+    timeout-minutes: 45
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
-          go-version: '1.23.x'
+          php-version: '8.4'
+          extensions: iconv, phar
+          tools: composer
+          coverage: none
 
-      - name: Test Windows CLI
-        run: go test ./cmd/x68k-prn-decoder
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --no-dev
 
-      - name: Build Windows CLI
-        run: go build -trimpath -ldflags "-X main.version=ci" -o x68k-prn-decoder-windows-amd64.exe ./cmd/x68k-prn-decoder
+      - name: Build PHAR
+        run: composer build-phar
+
+      - name: Download verified static-php-cli
+        shell: pwsh
+        run: |
+          Invoke-WebRequest `
+            -Uri 'https://github.com/crazywhalecc/static-php-cli/releases/download/2.8.5/spc-windows-x64.exe' `
+            -OutFile 'spc.exe'
+          $expected = '425b54ab857e21409c1fd9b818899ffebabd1e2817ef0a0ed5ae8a3d9f5b463b'
+          $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath 'spc.exe').Hash.ToLowerInvariant()
+          if ($actual -ne $expected) {
+            throw "static-php-cli SHA-256 mismatch: $actual"
+          }
+
+      - name: Prepare PHP Micro build environment
+        run: .\spc.exe doctor --no-interaction --no-motd
+
+      - name: Download PHP Micro sources
+        run: .\spc.exe download --with-php=8.4 --for-extensions "iconv,phar" --prefer-pre-built --retry=3 --no-interaction --no-motd
+
+      - name: Build PHP Micro
+        run: .\spc.exe build "iconv,phar" --build-micro --with-micro-fake-cli --no-interaction --no-motd
+
+      - name: Combine PHP application and Micro SAPI
+        run: .\spc.exe micro:combine dist\x68k-prn-decoder.phar -O dist\x68k-prn-decoder-windows-amd64.exe --no-interaction --no-motd
+
+      - name: Smoke-test standalone EXE
+        shell: pwsh
+        run: |
+          .\dist\x68k-prn-decoder-windows-amd64.exe --version
+          $bytes = [Collections.Generic.List[byte]]::new()
+          $bytes.AddRange([byte[]](0x1B,0x4B,0x1C,0x53,0x06,0x06))
+          $bytes.AddRange([Text.Encoding]::ASCII.GetBytes('M>L?8!:w%5!<%S%9'))
+          $bytes.AddRange([byte[]](0x0D,0x0A,0x0C))
+          [IO.File]::WriteAllBytes('dist\sample.prn', $bytes.ToArray())
+          .\dist\x68k-prn-decoder-windows-amd64.exe --output-dir=dist\decoded dist\sample.prn
+          $text = Get-Content -Raw -Encoding UTF8 'dist\decoded\sample_decoded.txt'
+          if (-not $text.Contains('余命検索サービス')) {
+            throw 'Standalone EXE decode test failed.'
+          }
 
       - name: Upload Windows CLI artifact
         uses: actions/upload-artifact@v4
         with:
           name: x68k-prn-decoder-windows-amd64
-          path: x68k-prn-decoder-windows-amd64.exe
+          path: dist/x68k-prn-decoder-windows-amd64.exe

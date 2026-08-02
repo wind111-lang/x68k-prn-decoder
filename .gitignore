@@ -4,4 +4,9 @@
 *_decoded.txt
 *_decoded.html
 *.exe
-.tmp-go*/
+/dist/
+/buildroot/
+/downloads/
+/source/
+/spc.exe
+.tmp-*/

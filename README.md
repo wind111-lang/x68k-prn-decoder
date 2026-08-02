@@ -9,13 +9,13 @@ X68000エミュレーターであるXM6 TypeGが保存したX68000用SHARP形式
 
 ### Windows EXE
 
-[Releases](https://github.com/wind111-lang/x68k-prn-decoder/releases)から`x68k-prn-decoder-windows-amd64.exe`をダウンロードできます。PHPやComposerをインストールせずに利用できます。
+[Releases](https://github.com/wind111-lang/x68k-prn-decoder/releases)から`x68k-prn-decoder-windows-amd64.exe`をダウンロードできます。PHPやComposerをインストールせずに利用できます。EXEはPHP Micro SAPIに、このリポジトリのPHPコードを結合したものです。
 
 ```powershell
 .\x68k-prn-decoder-windows-amd64.exe "C:\path\to\sxdx95.prn"
 ```
 
-EXEは署名されていません。実行時の通信、自己更新、自己展開は行いません。ソースは`cmd/x68k-prn-decoder`に公開しています。
+EXEは署名されていません。実行時の通信、自己更新、自己展開は行いません。
 
 ### PHP CLI
 

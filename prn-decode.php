@@ -22,6 +22,8 @@ if (is_file($composerAutoload)) {
 
 use X68000\Printer\X68000PrnDecoder;
 
+const X68K_PRN_DECODER_VERSION = 'v0.1.2';
+
 function usage(): string
 {
     return <<<TEXT
@@ -36,6 +38,7 @@ X68000 PRN復号ツール
   --format=html       印刷用HTMLだけ保存
   --output-dir=PATH   指定フォルダーへ保存
   --stdout            保存せず標準出力へ表示（入力は1ファイル）
+  --version           バージョンを表示
   -h, --help          このヘルプを表示
 
 例:
@@ -46,7 +49,7 @@ X68000 PRN復号ツール
 TEXT;
 }
 
-if (PHP_SAPI !== 'cli') {
+if (!in_array(PHP_SAPI, ['cli', 'micro'], true)) {
     fwrite(STDERR, "このツールはCLI専用です。\n");
     exit(2);
 }
@@ -68,6 +71,10 @@ foreach (array_slice($argv, 1) as $argument) {
     }
     if ($argument === '-h' || $argument === '--help') {
         echo usage();
+        exit(0);
+    }
+    if ($argument === '--version') {
+        echo 'x68k-prn-decoder ' . X68K_PRN_DECODER_VERSION . PHP_EOL;
         exit(0);
     }
     if ($argument === '--stdout') {

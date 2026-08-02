@@ -18,11 +18,14 @@
     "prn-decode.php"
   ],
   "scripts": {
-    "test": "@php tests/test.php"
+    "test": "@php tests/test.php",
+    "build-phar": "@php -d phar.readonly=0 tools/build-phar.php"
   },
   "archive": {
     "exclude": [
       "/tests",
+      "/tools",
+      "/dist",
       "/*.prn",
       "/*_decoded.txt",
       "/*_decoded.html"
