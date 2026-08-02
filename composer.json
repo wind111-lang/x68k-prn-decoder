@@ -1,0 +1,31 @@
+{
+  "name": "wind111-lang/x68k-prn-decoder",
+  "description": "X68000/XM6のSHARP形式PRNをUTF-8テキストと印刷用HTMLへ復号するCLIツール",
+  "type": "library",
+  "require": {
+    "php": ">=8.0"
+  },
+  "suggest": {
+    "ext-iconv": "JIS X 0208とCP932の文字変換に使用します",
+    "ext-mbstring": "iconvの代わりに文字変換へ使用できます"
+  },
+  "autoload": {
+    "psr-4": {
+      "X68000\\Printer\\": "src/"
+    }
+  },
+  "bin": [
+    "prn-decode.php"
+  ],
+  "scripts": {
+    "test": "@php tests/test.php"
+  },
+  "archive": {
+    "exclude": [
+      "/tests",
+      "/*.prn",
+      "/*_decoded.txt",
+      "/*_decoded.html"
+    ]
+  }
+}
