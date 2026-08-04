@@ -75,13 +75,13 @@ final class X68000PrnDecoderTest extends TestCase
         $outputDirectory = $this->tempRoot . DIRECTORY_SEPARATOR . 'new-output';
         self::assertTrue(mkdir($inputDirectory, 0777, true));
 
-        $inputPath = $inputDirectory . DIRECTORY_SEPARATOR . 'sxdx95.prn';
+        $inputPath = $inputDirectory . DIRECTORY_SEPARATOR . 'sample.prn';
         self::assertNotFalse(file_put_contents($inputPath, $this->sample()));
 
         $converted = (new X68000PrnDecoder())->convertFile($inputPath, $outputDirectory);
 
-        $expectedTextPath = $outputDirectory . DIRECTORY_SEPARATOR . 'sxdx95_decoded.txt';
-        $expectedHtmlPath = $outputDirectory . DIRECTORY_SEPARATOR . 'sxdx95_decoded.html';
+        $expectedTextPath = $outputDirectory . DIRECTORY_SEPARATOR . 'sample_decoded.txt';
+        $expectedHtmlPath = $outputDirectory . DIRECTORY_SEPARATOR . 'sample_decoded.html';
         self::assertSame($expectedTextPath, $converted['text_path']);
         self::assertSame($expectedHtmlPath, $converted['html_path']);
         self::assertFileExists($expectedTextPath);

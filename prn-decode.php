@@ -42,9 +42,9 @@ X68000 PRN復号ツール
   -h, --help          このヘルプを表示
 
 例:
-  php prn-decode.php sxdx95.prn
+  php prn-decode.php sample.prn
   php prn-decode.php --format=txt *.prn
-  php prn-decode.php --stdout sxdx95.prn
+  php prn-decode.php --stdout sample.prn
 
 TEXT;
 }
