@@ -16,9 +16,9 @@ X68000実機またはエミュレーターから出力・保存した、X68000�
 入力したPRNファイルと同じフォルダーへ、TXTと印刷用HTMLが作成されます。
 
 ```text
-sxdx95.prn
-sxdx95_decoded.txt
-sxdx95_decoded.html
+sample.prn
+sample_decoded.txt
+sample_decoded.html
 ```
 
 複数のPRNファイルをまとめてドラッグ＆ドロップすることもできます。EXEは署名されていません。実行時の通信、自己更新、自己展開は行いません。
@@ -43,14 +43,14 @@ composer require wind111-lang/x68k-prn-decoder:dev-main
 PRNファイルを指定します。
 
 ```shell
-php prn-decode.php "C:\path\to\sxdx95.prn"
+php prn-decode.php "C:\path\to\sample.prn"
 ```
 
 入力ファイルと同じフォルダーへ、次のファイルが自動的に作成されます。
 
 ```text
-sxdx95_decoded.txt
-sxdx95_decoded.html
+sample_decoded.txt
+sample_decoded.html
 ```
 
 ファイルが存在しない場合は新規作成され、すでに存在する場合は最新の復号結果で上書きされます。`--output-dir`で指定したフォルダーが存在しない場合、そのフォルダーも自動作成されます。
@@ -75,7 +75,7 @@ php prn-decode.php --format=txt "C:\prints\*.prn"
 標準出力へ復号結果を送る例：
 
 ```shell
-php prn-decode.php --stdout "C:\path\to\sxdx95.prn"
+php prn-decode.php --stdout "C:\path\to\sample.prn"
 ```
 
 印刷用HTMLはブラウザーで開き、印刷画面から紙またはPDFへ出力できます。PRN内の改ページはHTMLのページ区切りとして反映されます。
@@ -88,7 +88,7 @@ php prn-decode.php --stdout "C:\path\to\sxdx95.prn"
 use X68000\Printer\X68000PrnDecoder;
 
 $decoder = new X68000PrnDecoder();
-$result = $decoder->decodeFile('sxdx95.prn');
+$result = $decoder->decodeFile('sample.prn');
 
 echo $decoder->toReadableText($result);
 ```
@@ -100,7 +100,7 @@ use X68000\Printer\X68000PrnDecoder;
 
 $decoder = new X68000PrnDecoder();
 $converted = $decoder->convertFile(
-    'sxdx95.prn',
+    'sample.prn',
     __DIR__ . '/decoded',
     'both'
 );

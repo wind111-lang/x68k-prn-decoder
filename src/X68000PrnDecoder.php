@@ -9,7 +9,7 @@ use Throwable;
 final class X68000PrnDecoder
 {
     /**
-     * Decode a SHARP printer stream emitted by Super X-Day X'95.
+     * Decode an X68000 SHARP-format printer stream.
      *
      * ESC K enters JIS X 0208 mode, ESC H returns to ASCII mode,
      * FS S n n is a character-size command, and FF is a page break.
