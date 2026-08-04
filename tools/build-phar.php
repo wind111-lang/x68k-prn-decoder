@@ -33,7 +33,7 @@ foreach ($includeRoots as $includeRoot) {
         new RecursiveDirectoryIterator($includeRoot, FilesystemIterator::SKIP_DOTS)
     );
     foreach ($iterator as $file) {
-        if (!$file->isFile()) {
+        if (!$file instanceof SplFileInfo || !$file->isFile()) {
             continue;
         }
         $absolute = $file->getPathname();

@@ -248,6 +248,10 @@ HTML;
         return $name === '' ? 'decoded' : $name;
     }
 
+    /**
+     * @param int<33, 126> $first
+     * @param int<33, 126> $second
+     */
     private function decodeJisPair(int $first, int $second): ?string
     {
         $iso2022jp = "\x1B\x24\x42" . chr($first) . chr($second) . "\x1B\x28\x42";
@@ -264,8 +268,8 @@ HTML;
         if (function_exists('mb_convert_encoding')) {
             try {
                 $decoded = mb_convert_encoding($bytes, 'UTF-8', $from);
-                return $decoded === '' ? null : $decoded;
-            } catch (Throwable $e) {
+                return $decoded === false || $decoded === '' ? null : $decoded;
+            } catch (Throwable) {
                 return null;
             }
         }

@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.0', '8.4']
+        php-version: ['8.4', '8.5']
 
     steps:
       - uses: actions/checkout@v5
@@ -21,7 +21,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: iconv
+          extensions: iconv, mbstring, dom, xml, xmlwriter
           tools: composer
           coverage: none
 
@@ -36,6 +36,9 @@ jobs:
 
       - name: Test
         run: composer test
+
+      - name: Static analysis
+        run: composer analyse
 
   windows-exe:
     runs-on: windows-2022

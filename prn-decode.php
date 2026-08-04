@@ -60,7 +60,16 @@ $stdout = false;
 $inputs = [];
 $optionsEnded = false;
 
-foreach (array_slice($argv, 1) as $argument) {
+$arguments = $_SERVER['argv'] ?? [];
+if (!is_array($arguments)) {
+    $arguments = [];
+}
+
+foreach (array_slice($arguments, 1) as $argument) {
+    if (!is_string($argument)) {
+        continue;
+    }
+
     if ($optionsEnded) {
         $inputs[] = $argument;
         continue;

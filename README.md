@@ -1,21 +1,27 @@
 # X68000 PRN復号ツール
 
-X68000エミュレーターであるXM6 TypeGが保存したX68000用SHARP形式のPRNファイルを解析し、UTF-8テキストと印刷用HTMLへ変換するツールです。
+X68000実機またはエミュレーターから出力・保存した、X68000用SHARP形式のPRNファイルを解析し、UTF-8テキストと印刷用HTMLへ変換するツールです。現在の動作確認には、XM6 TypeGから出力されたPRN形式のログを使用しています。
 
 ## 必要環境
-- PHP 8.0以降
+
+- Windows EXE：64ビット版Windows（PHP・Composerは不要）
+- PHP CLI：PHP 8.4.1以降
 
 ## インストール
 
 ### Windows EXE
 
-[Releases](https://github.com/wind111-lang/x68k-prn-decoder/releases)から`x68k-prn-decoder-windows-amd64.exe`をダウンロードできます。PHPやComposerをインストールせずに利用できます。EXEはPHP Micro SAPIに、このリポジトリのPHPコードを結合したものです。
+[Releases](https://github.com/wind111-lang/x68k-prn-decoder/releases)から`x68k-prn-decoder-windows-amd64.exe`をダウンロードし、変換するPRNファイルをEXEへドラッグ＆ドロップしてください。PHPやComposerをインストールする必要はありません。
 
-```powershell
-.\x68k-prn-decoder-windows-amd64.exe "C:\path\to\sxdx95.prn"
+入力したPRNファイルと同じフォルダーへ、TXTと印刷用HTMLが作成されます。
+
+```text
+sxdx95.prn
+sxdx95_decoded.txt
+sxdx95_decoded.html
 ```
 
-EXEは署名されていません。実行時の通信、自己更新、自己展開は行いません。
+複数のPRNファイルをまとめてドラッグ＆ドロップすることもできます。EXEは署名されていません。実行時の通信、自己更新、自己展開は行いません。
 
 ### PHP CLI
 
@@ -118,4 +124,16 @@ EPSON形式、画像印刷、未知のプリンタ命令には対応していま
 
 ```shell
 composer test
+```
+
+PHPStanによる静的解析は次のコマンドで実行できます。
+
+```shell
+composer analyse
+```
+
+テストと静的解析をまとめて実行する場合：
+
+```shell
+composer check
 ```
